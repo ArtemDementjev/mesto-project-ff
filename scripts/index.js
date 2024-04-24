@@ -10,12 +10,15 @@
 
 const container = document.querySelector('.places__list');
 
-function addCardsInitially(linkValue, placeName, deleteFunction) {
+function createCard(cardObject, deleteFunction) {
+  linkValue = cardObject.link;
+  placeName = cardObject.name;
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const deleteButton = cardElement.querySelector('.card__delete-button');
-  cardElement.querySelector('.card__image').setAttribute('src', linkValue);
-  cardElement.querySelector('.card__image').setAttribute('alt', placeName);
+  cardImage = cardElement.querySelector('.card__image');
+  cardImage.setAttribute('src', linkValue);
+  cardImage.setAttribute('alt', placeName);
   cardElement.querySelector('.card__title').textContent = placeName;
   deleteButton.addEventListener('click', () => deleteFunction(cardElement));
   return cardElement;
@@ -26,9 +29,7 @@ function deleteCard(card) {
 }
 
 initialCards.forEach(function(item) {
-  linkValue = item.link;
-  placeName = item.name
-  container.append(addCardsInitially(linkValue, placeName, deleteCard))
+  container.append(createCard(item, deleteCard))
 });
 
 
