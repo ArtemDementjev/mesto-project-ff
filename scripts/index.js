@@ -16,7 +16,7 @@ function createCard(cardObject, deleteFunction) {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const deleteButton = cardElement.querySelector('.card__delete-button');
-  cardImage = cardElement.querySelector('.card__image');
+  const cardImage = cardElement.querySelector('.card__image');
   cardImage.setAttribute('src', linkValue);
   cardImage.setAttribute('alt', placeName);
   cardElement.querySelector('.card__title').textContent = placeName;
