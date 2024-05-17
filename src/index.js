@@ -82,7 +82,7 @@ formNewPlace.addEventListener('submit', (evt) => {
     name: newPlaceName.value,
     link: newPlaceLink.value
   }
-  container.prepend(createCard(cardObject, deleteCard, likeCard, showBigImage, popupImage, popupWithImage, closeByEscape);
+  container.prepend(createCard(cardObject, deleteCard, likeCard, showBigImage, popupImage, popupWithImage, closeByEscape));
   closeModal('close');
   formNewPlace.reset();
 });
