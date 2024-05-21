@@ -27,6 +27,7 @@ const newPlaceName = formNewPlace['place-name'];
 const newPlaceLink = formNewPlace['link'];
 
 const popupImage = document.querySelector('.popup__image');
+const popupCaption = document.querySelector('.popup__caption');
 
 const container = document.querySelector('.places__list');
 
@@ -60,6 +61,7 @@ document.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('card__image')) {
       popupImage.src = evt.target.src;
       popupImage.alt = evt.target.alt;
+      popupCaption.innerText = evt.target.alt;
     };
 });
 
