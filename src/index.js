@@ -36,7 +36,7 @@ function submitEditProfileForm(evt) {
   evt.preventDefault();
   profileDataOnPage.name.textContent = inputsEditProfile.name.value;
   profileDataOnPage.about.textContent = inputsEditProfile.about.value;
-  closeModal(evt.target.closest('.popup'));
+  closeModal(popupEditProfile);
 };
 
 function openImagePopup(evt) {
@@ -71,5 +71,5 @@ formNewPlace.addEventListener('submit', (evt) => {
     link: newPlaceLink.value
   }
   container.prepend(cardFunctions.createCard(cardTemplate, cardObject, cardFunctions, openImagePopup));
-  closeModal(evt.target.closest('.popup'));
+  closeModal(popupAddCard);
 });

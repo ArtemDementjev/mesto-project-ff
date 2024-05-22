@@ -1,12 +1,11 @@
 export const cardFunctions = {
   createCard,
   deleteCard,
-  likeCard,
-  getCardTemplate
+  likeCard
 };
 
 function createCard(cardTemplate, cardObject, functions, popupFunction) {
-  const cardElement = functions.getCardTemplate(cardTemplate);
+  const cardElement = getCardTemplate(cardTemplate);
   const deleteButton = cardElement.querySelector('.card__delete-button');
   const heartButton = cardElement.querySelector('.card__like-button');
   const cardImage = cardElement.querySelector('.card__image');

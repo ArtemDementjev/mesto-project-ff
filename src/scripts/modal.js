@@ -11,8 +11,8 @@ function closeByEscape(evt) {
   }
 };
 
-export function closeModal(evt) {
-  evt.classList.remove('popup_is-opened');
+export function closeModal(popup) {
+  popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closeByEscape);
   document.removeEventListener('click', closeHandler);
 };
