@@ -2,6 +2,7 @@ import './pages/index.css';
 import {initialCards} from './scripts/cards.js';
 import {cardFunctions} from './scripts/card.js';
 import {openModal, closeModal} from './scripts/modal.js';
+import {enableValidation, clearValidation} from './scripts/validation.js';
 
 const cardTemplate = document.querySelector('#card-template').content;
 
@@ -15,8 +16,17 @@ const buttonAddCard = document.querySelector('.profile__add-button');
 const formEditProfile = document.forms['edit-profile'];
 const inputsEditProfile = {
   name: formEditProfile['name'],
-  about: formEditProfile['description']
+  about: formEditProfile['description'],
 };
+
+const validationSettings = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
 
 const profileDataOnPage = {
   name: document.querySelector('.profile__title'),
@@ -46,6 +56,7 @@ function openImagePopup(evt) {
   popupCaption.innerText = evt.target.alt;
 };
 
+enableValidation(validationSettings);
 
 initialCards.forEach(function(item) {
   container.append(cardFunctions.createCard(cardTemplate, item, cardFunctions, openImagePopup))
@@ -53,12 +64,14 @@ initialCards.forEach(function(item) {
 
 buttonProfileEdit.addEventListener('click', () => {
   openModal(popupEditProfile);
+  clearValidation(formEditProfile, validationSettings);
   inputsEditProfile.name.value = profileDataOnPage.name.innerText;
   inputsEditProfile.about.value = profileDataOnPage.about.innerText;
 });
 
 buttonAddCard.addEventListener('click', () => {
   openModal(popupAddCard);
+  clearValidation(formNewPlace, validationSettings)
   formNewPlace.reset();
 });
 
