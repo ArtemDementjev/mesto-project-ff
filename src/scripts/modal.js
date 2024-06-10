@@ -1,7 +1,7 @@
 export function openModal(popupToOpen) {
   popupToOpen.classList.add('popup_is-opened');
   document.addEventListener('keydown', closeByEscape);
-  document.addEventListener('click', closeHandler);
+  document.addEventListener('mousedown', closeHandler);
 };
 
 function closeByEscape(evt) {
@@ -14,7 +14,7 @@ function closeByEscape(evt) {
 export function closeModal(popup) {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closeByEscape);
-  document.removeEventListener('click', closeHandler);
+  document.removeEventListener('mousedown', closeHandler);
 };
 
 function closeHandler (evt) {
