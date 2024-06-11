@@ -6,17 +6,19 @@ const config = {
   }
 };
 
+function getResponseData(res) {
+  if (res.ok) {
+    return res.json()
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export function getAccountInfo () {
   return fetch(`${config.baseURL}users/me`, {
     method: "GET",
     headers: config.headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function getInitialCards () {
@@ -24,12 +26,7 @@ export function getInitialCards () {
     method: "GET",
     headers: config.headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function postCard(newPlaceName, newPlaceLink) {
@@ -41,12 +38,7 @@ export function postCard(newPlaceName, newPlaceLink) {
       link: `${newPlaceLink.value}`
     })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function patchAvatar(newLink) {
@@ -57,12 +49,7 @@ export function patchAvatar(newLink) {
       avatar: `${newLink}`
     })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function patchProfileInfo(profileName, profileAbout) {
@@ -74,12 +61,7 @@ export function patchProfileInfo(profileName, profileAbout) {
       about: `${profileAbout}`
     })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function deleteCardFromServer(cardID) {
@@ -87,12 +69,7 @@ export function deleteCardFromServer(cardID) {
     method: 'DELETE',
     headers: config.headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function deleteLike(cardID) {
@@ -100,12 +77,7 @@ export function deleteLike(cardID) {
     method: 'DELETE',
     headers: config.headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }
 
 export function putLike(cardID) {
@@ -113,10 +85,5 @@ export function putLike(cardID) {
     method: 'PUT',
     headers: config.headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(getResponseData)
 }

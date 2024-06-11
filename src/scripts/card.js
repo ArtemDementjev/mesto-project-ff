@@ -6,7 +6,7 @@ export const cardFunctions = {
 
 import {deleteCardFromServer, deleteLike, putLike} from './api';
 
-function createCard(cardTemplate, cardObject, functions, popupFunction, profileObject) {
+function createCard(cardTemplate, cardObject, functions, popupFunction, ownerId, openConfirmDeletePopup) {
   const cardElement = getCardTemplate(cardTemplate);
   const deleteButton = cardElement.querySelector('.card__delete-button');
   const heartButton = cardElement.querySelector('.card__like-button');
@@ -16,23 +16,26 @@ function createCard(cardTemplate, cardObject, functions, popupFunction, profileO
   cardImage.setAttribute('src', cardObject.link);
   cardImage.setAttribute('alt', cardObject.name);
   cardElement.querySelector('.card__title').textContent = cardObject.name;
-  // deleteButton.addEventListener('click', () => functions.deleteCard(cardElement, cardObject));
+  deleteButton.addEventListener('click', (evt) => {
+    const cardToDelete = {card: cardElement, id: cardObject._id};
+    openConfirmDeletePopup(evt, cardToDelete);
+  });
   heartButton.addEventListener('click', () => functions.likeCard(heartButton, cardObject, likesQuantity));
   cardImage.addEventListener('click', (evt) => popupFunction(evt));
-  if (!(profileObject['_id'] === cardObject['owner']['_id'])) {
+  if (!(ownerId === cardObject.owner._id)) {
     deleteButton.style.display = 'none';
   }
   if (cardObject.likes.some((object) => {
-    return object._id === '0aaf1539537bfb94e4b997f9';
-})) {
+    return object._id === ownerId;
+  })) {
     heartButton.classList.add('card__like-button_is-active');
   }
-  cardElement.setAttribute('id', cardObject._id);
+  // cardElement.setAttribute('id', cardObject._id);
   return cardElement;
 };
 
-function deleteCard(card) {
-  deleteCardFromServer(card.id)
+function deleteCard(card, id) {
+  deleteCardFromServer(id)
     .then(() => {
       card.remove()
     })

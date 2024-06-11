@@ -24,6 +24,7 @@ const inputsEditProfile = {
 };
 
 const formConfirmDelete = document.forms['confirm-delete'];
+const cardToDeleteGlobal = {};
 
 const formEditAvatar = document.forms['edit-profile-image'];
 const inputEditAvatar = formEditAvatar['avatar-edit'];
@@ -54,36 +55,38 @@ const container = document.querySelector('.places__list');
 
 function submitEditProfileForm(evt) {
   evt.preventDefault();
-  evt.target.querySelector('.popup__button').innerText = 'Сохранение...';
+  evt.submitter.innerText = 'Сохранение...';
   patchProfileInfo(inputsEditProfile.name.value, inputsEditProfile.about.value)
   .then((result) => {
     profileDataOnPage.name.textContent = result.name;
     profileDataOnPage.about.textContent = result.about;
+    closeModal(popupEditProfile);
   })
   .catch((err) => console.log(err))
   .finally(() => {
-    closeModal(popupEditProfile);
     evt.target.querySelector('.popup__button').innerText = 'Сохранить'
   })
 };
 
 function submitEditAvatarForm(evt) {
   evt.preventDefault();
-  evt.target.querySelector('.popup__button').innerText = 'Сохранение...';
+  evt.submitter.innerText = 'Сохранение...';
   patchAvatar(inputEditAvatar.value)
   .then((result) => {
-    profileDataOnPage.avatar.style.backgroundImage = `url(${result.avatar})`
+    profileDataOnPage.avatar.style.backgroundImage = `url(${result.avatar})`;
+    closeModal(popupEditAvatar);
   })
   .catch((err) => console.log(err))
   .finally(() => {
     evt.target.querySelector('.popup__button').innerText = 'Сохранить'
-    closeModal(popupEditAvatar);
+
   })
 };
 
 function submitConfirmDeleteForm(evt) {
-  const cardToDelete = document.getElementById(`${evt.target.closest('.popup').id}`);
-  cardFunctions.deleteCard(cardToDelete)
+  evt.preventDefault();
+  // const cardToDelete = document.getElementById(`${evt.target.closest('.popup').id}`);
+  cardFunctions.deleteCard(cardToDeleteGlobal.card, cardToDeleteGlobal.id)
   closeModal(popupConfirmDelete);
 }
 
@@ -92,6 +95,13 @@ function openImagePopup(evt) {
   popupImage.src = evt.target.src;
   popupImage.alt = evt.target.alt;
   popupCaption.innerText = evt.target.alt;
+};
+
+function openConfirmDeletePopup(evt, cardToDelete) {
+  openModal(popupConfirmDelete);
+  // popupConfirmDelete.setAttribute('id', `${evt.target.closest('.card').id}`);
+  cardToDeleteGlobal.card = cardToDelete.card;
+  cardToDeleteGlobal.id = cardToDelete.id;
 };
 
 enableValidation(validationSettings);
@@ -110,9 +120,9 @@ buttonProfileEdit.addEventListener('click', () => {
 });
 
 buttonAddCard.addEventListener('click', () => {
+  formNewPlace.reset();
   openModal(popupAddCard);
   clearValidation(formNewPlace, validationSettings)
-  formNewPlace.reset();
 });
 
 avatar.addEventListener('click', () => {
@@ -129,16 +139,13 @@ formEditAvatar.addEventListener('submit', submitEditAvatarForm);
 
 formNewPlace.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  evt.target.querySelector('.popup__button').innerText = 'Создание...';
+  evt.submitter.innerText = 'Создание...';
   postCard(newPlaceName, newPlaceLink)
     .then((result) => {
-      container.prepend(cardFunctions.createCard(cardTemplate, result, cardFunctions, openImagePopup, {'_id': '0aaf1539537bfb94e4b997f9'}));
-    })
-    .catch((err) => console.log(err))
-    .finally(() => {
-      evt.target.querySelector('.popup__button').innerText = 'Создать';
+      container.prepend(cardFunctions.createCard(cardTemplate, result, cardFunctions, openImagePopup, result.owner._id, openConfirmDeletePopup));
       closeModal(popupAddCard);
     })
+    .catch((err) => console.log(err))
 });
 
 Promise.all([
@@ -150,16 +157,13 @@ Promise.all([
       profileDataOnPage.about.textContent = accountInfo.about;
       profileDataOnPage.avatar.style.backgroundImage = `url(${accountInfo.avatar})`;
       cards.forEach(function(item) {
-        container.append(cardFunctions.createCard(cardTemplate, item, cardFunctions, openImagePopup, accountInfo));
+        container.append(cardFunctions.createCard(
+          cardTemplate,
+          item,
+          cardFunctions,
+          openImagePopup,
+          accountInfo._id,
+          openConfirmDeletePopup));
       })
     })
     .catch((err) => console.log(err))
-    .finally(() => {
-      const deleteButtons = Array.from(container.querySelectorAll('.card__delete-button'));
-      deleteButtons.forEach((button) => {
-        button.addEventListener('click', (evt) => {
-          openModal(popupConfirmDelete);
-          popupConfirmDelete.setAttribute('id', `${evt.target.closest('.card').id}`)
-        })
-      })
-    })
