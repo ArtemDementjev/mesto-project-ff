@@ -4,7 +4,7 @@ export const cardFunctions = {
   likeCard
 };
 
-import {deleteCardFromServer, deleteLike, putLike} from './api';
+import {deleteLike, putLike} from './api';
 
 function createCard(cardTemplate, cardObject, functions, popupFunction, ownerId, openConfirmDeletePopup) {
   const cardElement = getCardTemplate(cardTemplate);
@@ -34,12 +34,8 @@ function createCard(cardTemplate, cardObject, functions, popupFunction, ownerId,
   return cardElement;
 };
 
-function deleteCard(card, id) {
-  deleteCardFromServer(id)
-    .then(() => {
+function deleteCard(card) {
       card.remove()
-    })
-    .catch((err) => console.log(err))
 };
 
 function likeCard(heartButton, cardObject, likesQuantity) {

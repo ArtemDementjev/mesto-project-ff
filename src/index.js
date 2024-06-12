@@ -2,7 +2,7 @@ import './pages/index.css';
 import {cardFunctions} from './scripts/card.js';
 import {openModal, closeModal} from './scripts/modal.js';
 import {enableValidation, clearValidation} from './scripts/validation.js';
-import {getAccountInfo, getInitialCards, postCard, patchAvatar, patchProfileInfo} from './scripts/api.js';
+import {getAccountInfo, getInitialCards, postCard, patchAvatar, patchProfileInfo, deleteCardFromServer} from './scripts/api.js';
 
 const cardTemplate = document.querySelector('#card-template').content;
 
@@ -85,9 +85,13 @@ function submitEditAvatarForm(evt) {
 
 function submitConfirmDeleteForm(evt) {
   evt.preventDefault();
+  deleteCardFromServer(cardToDeleteGlobal.id)
+  .then(res => {
+    cardFunctions.deleteCard(cardToDeleteGlobal.card)
+    closeModal(popupConfirmDelete);
+  })
+  .catch(err => console.log(err))
   // const cardToDelete = document.getElementById(`${evt.target.closest('.popup').id}`);
-  cardFunctions.deleteCard(cardToDeleteGlobal.card, cardToDeleteGlobal.id)
-  closeModal(popupConfirmDelete);
 }
 
 function openImagePopup(evt) {
