@@ -119,6 +119,7 @@ crossButtons.forEach((item) => {
 buttonProfileEdit.addEventListener('click', () => {
   openModal(popupEditProfile);
   clearValidation(formEditProfile, validationSettings);
+  formEditProfile.querySelector(validationSettings.submitButtonSelector).classList.add(validationSettings.inactiveButtonClass);
   inputsEditProfile.name.value = profileDataOnPage.name.innerText;
   inputsEditProfile.about.value = profileDataOnPage.about.innerText;
 });

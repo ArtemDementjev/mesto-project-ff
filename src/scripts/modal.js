@@ -14,7 +14,7 @@ function closeByEscape(evt) {
 export function closeModal(popup) {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closeByEscape);
-  popupToOpen.removeEventListener('mousedown', closeHandler);
+  popup.removeEventListener('mousedown', closeHandler);
 };
 
 function closeHandler (evt) {
