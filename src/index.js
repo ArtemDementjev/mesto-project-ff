@@ -64,7 +64,7 @@ function submitEditProfileForm(evt) {
   })
   .catch((err) => console.log(err))
   .finally(() => {
-    evt.target.querySelector('.popup__button').innerText = 'Сохранить'
+    evt.submitter.innerText = 'Сохранить'
   })
 };
 
@@ -78,7 +78,7 @@ function submitEditAvatarForm(evt) {
   })
   .catch((err) => console.log(err))
   .finally(() => {
-    evt.target.querySelector('.popup__button').innerText = 'Сохранить'
+    evt.submitter.innerText = 'Сохранить'
 
   })
 };
